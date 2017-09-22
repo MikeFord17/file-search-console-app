@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+using System.Speech.Synthesis;
+
+namespace MacroApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Initialize a new instance of the SpeechSynthesizer.
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+
+            // Configure the audio output. 
+            synth.SetOutputToDefaultAudioDevice();
+
+            // Prompt user to write and store firstName
+            Console.Write("Please enter your name: ");
+            string firstName = Console.ReadLine();
+
+            // Speak a string.
+            synth.Speak($"Hi {firstName} can I help you find a file?");
+            StartOver:
+            Console.Write("Please enter file path and file you are looking for: ");
+            string filePath = Console.ReadLine();
+
+            // Check if file exist
+            bool persistedSettingsExist = File.Exists(filePath);
+
+            // It doesn't, tell user to physically check location
+            if (!persistedSettingsExist)
+            {
+
+                synth.Speak($"Dude... Where is it?! Double check in {filePath}");
+            }
+
+            // If it does exist, tell user where to find it
+            else if (persistedSettingsExist)
+            {
+                synth.Speak($"Dude...Its right here! Go to {filePath} to open the file");
+            }
+
+            // Ask if user wants to search again
+            synth.Speak("Can I help you find something else?");
+            Console.Write("Yes or No: ");
+            string userInput = Console.ReadLine();
+
+            // If yes start the app over
+            if (userInput == "Yes")
+            {
+                goto StartOver;
+            }
+
+            // If no, then prompt to end app
+            else
+            {
+                synth.Speak("Bye Bye now");
+            }
+
+            Console.WriteLine("Press any key to end...");
+            Console.ReadKey();
+
+        }
+    }
+}
