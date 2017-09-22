@@ -52,7 +52,7 @@ namespace MacroApp
             // If yes start the app over
             if (userInput == "Yes")
             {
-                goto StartOver;
+                goto StartOver; //Goto?
             }
 
             // If no, then prompt to end app
